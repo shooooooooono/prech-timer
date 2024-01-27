@@ -102,7 +102,7 @@ function Timer() {
       <Grid>
         <h1
           className="timer-display"
-          style={{ fontSize: "150px", marginTop: 0, marginBottom: 0, marginRight: "50px" }}
+          style={{ fontSize: "150px", marginTop: 0, marginBottom: 0, marginRight: "100px" }}
         >
           {formatTime()}
         </h1>
