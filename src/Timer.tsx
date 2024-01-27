@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Unstable_Grid2";
-import { Box } from "@mui/material";
 
 function Timer() {
   const [minutes, setMinutes] = useState(0);
@@ -18,6 +17,7 @@ function Timer() {
   function reset() {
     setMinutes(0);
     setSeconds(0);
+    setIsRunning(false);
   }
 
   function increment() {
@@ -71,6 +71,7 @@ function Timer() {
   function set45min() {
     setMinutes(45);
     setSeconds(0);
+    setIsRunning(false);
   }
 
   useEffect(() => {
@@ -94,15 +95,16 @@ function Timer() {
   }
 
   return (
-    <Grid
-      container
-      alignItems={"center"}
-      spacing={0.5}
-    >
+    <Grid container alignItems={"center"} spacing={0.5}>
       <Grid>
         <h1
           className="timer-display"
-          style={{ fontSize: "150px", marginTop: 0, marginBottom: 0, marginRight: "100px" }}
+          style={{
+            fontSize: "150px",
+            marginTop: 0,
+            marginBottom: 0,
+            marginRight: "100px",
+          }}
         >
           {formatTime()}
         </h1>
@@ -113,7 +115,12 @@ function Timer() {
           value={minutes}
           onChange={updateMinutes}
           error={!isValidMinutes}
-          sx={{ width: "70px" }}
+          sx={{
+            width: "70px",
+            ".MuiInputBase-input": {
+              background: "wheat",
+            },
+          }}
         ></TextField>
       </Grid>
       <Grid>
@@ -122,7 +129,12 @@ function Timer() {
           value={seconds}
           onChange={updateSeconds}
           error={!isValidSeconds}
-          sx={{ width: "70px" }}
+          sx={{
+            width: "70px",
+            ".MuiInputBase-input": {
+              background: "wheat",
+            },
+          }}
         ></TextField>
       </Grid>
       <Grid>

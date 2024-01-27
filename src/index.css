@@ -5,8 +5,14 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   background-color: rgba(10, 10, 10, 0.2);
+}
+
+.MuiInputBase-input {
+  color: gray;
+  background: wheat;
+  color: blue;
 }
 
 code {
