@@ -14,6 +14,8 @@ function Timer() {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [isRunning, setIsRunning] = useState(false);
 
+  const [startedAt, setStartedAt] = useState<Date | null>(null);
+
   function reset() {
     setMinutes(0);
     setSeconds(0);
@@ -27,6 +29,28 @@ function Timer() {
       return;
     }
     setSeconds(seconds + 1);
+  }
+
+  function updateTimerInterval() {
+    const now = new Date()
+    const elapsedSec = Math.floor(calcElapsedTime(now) / 1000)
+    const elapsedSecAndMin = secToSecAndMin(elapsedSec)
+    setMinutes(elapsedSecAndMin.min)
+    setSeconds(elapsedSecAndMin.sec)
+  }
+
+  function calcElapsedTime(now: Date): number {
+    if (startedAt === null) {
+      return 0
+    }
+
+    return Math.floor(now.getTime() - startedAt.getTime())
+  }
+
+  function secToSecAndMin(seconds: number): { min: number; sec: number } {
+    const min = Math.floor(seconds / 60);
+    const sec = seconds % 60;
+    return { min, sec };
   }
 
   function formatTime(): string {
@@ -74,9 +98,27 @@ function Timer() {
     setIsRunning(false);
   }
 
+  function startTimer() {
+    // diffMilliSec
+    let diffMilliSec = 0;
+    const now = new Date()
+
+    // 時刻を設定している場合は引く
+    diffMilliSec -= (seconds * 1000)
+    diffMilliSec -= (minutes * 60 * 1000)
+
+    setStartedAt(new Date(now.getTime() + diffMilliSec))
+
+    setIsRunning(true)
+  }
+
+  function stopTimer() {
+    setIsRunning(false)
+  }
+
   useEffect(() => {
     if (isRunning) {
-      intervalRef.current = setInterval(increment, 1000);
+      intervalRef.current = setInterval(updateTimerInterval, 100);
     } else {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
@@ -88,10 +130,14 @@ function Timer() {
         clearInterval(intervalRef.current);
       }
     };
-  }, [increment, isRunning]);
+  }, [updateTimerInterval, isRunning]);
 
   function toggleRunning() {
-    setIsRunning(!isRunning);
+    if (isRunning) {
+      stopTimer()
+    } else {
+      startTimer()
+    }
   }
 
   return (
